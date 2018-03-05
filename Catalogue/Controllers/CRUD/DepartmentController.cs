@@ -15,7 +15,7 @@ namespace Catalogue.Controllers.CRUD
         CatalogueContext db = new CatalogueContext();
 
         // Ajax pagination PartialView Department 
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult AjaxPositionList(int? page)
         {
             int pageSize = 10;
@@ -24,7 +24,7 @@ namespace Catalogue.Controllers.CRUD
         }
 
         // GET: Department
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Index(int? page)
         {
             int pageSize = 10;
@@ -33,17 +33,17 @@ namespace Catalogue.Controllers.CRUD
         }
 
         // GET: Department/Details/5
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return HttpNotFound();
             Department administration = db.Departments.Include(e => e.Administration).SingleOrDefault(d => d.DepartmentId == id);
             return View(administration);
         }
 
         [HttpGet]
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         // GET: Department/Create
         public ActionResult Create()
         {
@@ -54,7 +54,7 @@ namespace Catalogue.Controllers.CRUD
 
         // POST: Department/Create
         [HttpPost]
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Create(Department collection)
         {
             try
@@ -70,11 +70,11 @@ namespace Catalogue.Controllers.CRUD
         }
 
         // GET: Department/Edit/5
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return HttpNotFound();
             Department department = db.Departments.Find(id);
             if (department == null)
                 return HttpNotFound();
@@ -86,7 +86,7 @@ namespace Catalogue.Controllers.CRUD
 
         // POST: Department/Edit/5
         [HttpPost]
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int id, Department collection)
         {
             try
@@ -102,7 +102,7 @@ namespace Catalogue.Controllers.CRUD
         }
 
         // GET: Department/Delete/5
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             //if (id == null)
@@ -117,7 +117,7 @@ namespace Catalogue.Controllers.CRUD
 
         // POST: Department/Delete/5
         [HttpPost]
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         [ActionName("Delete")]
         public ActionResult Delete(int? id, Department collection)
         {
@@ -125,7 +125,7 @@ namespace Catalogue.Controllers.CRUD
             try
             {
                 if (id == null)
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    return HttpNotFound();
                 department = db.Departments.Find(id);
                 if (department == null)
                     return HttpNotFound();

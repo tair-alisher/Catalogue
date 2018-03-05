@@ -14,7 +14,7 @@ namespace Catalogue.Controllers.CRUD
         CatalogueContext db = new CatalogueContext();
 
         // Ajax pagination PartialView Position 
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult AjaxPositionList(int? page)
         {
             int pageSize = 10;
@@ -23,7 +23,7 @@ namespace Catalogue.Controllers.CRUD
         }
 
         // GET: Position
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Index(int? page)
         {
             int pageSize = 10;
@@ -32,11 +32,11 @@ namespace Catalogue.Controllers.CRUD
         }
 
         // GET: Position/Details/5
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                 return HttpNotFound();
             Position position = db.Positions.Find(id);
             if (position == null)
                 return HttpNotFound();
@@ -45,7 +45,7 @@ namespace Catalogue.Controllers.CRUD
 
         // GET: Position/Create
         [HttpGet]
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();
@@ -53,7 +53,7 @@ namespace Catalogue.Controllers.CRUD
 
         // POST: Position/Create
         [HttpPost]
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Create(Position collection)
         {
             try
@@ -70,11 +70,11 @@ namespace Catalogue.Controllers.CRUD
         }
 
         // GET: Position/Edit/5
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                 return HttpNotFound();
             Position position = db.Positions.Find(id);
             if (position == null)
                 return HttpNotFound();
@@ -83,7 +83,7 @@ namespace Catalogue.Controllers.CRUD
 
         // POST: Position/Edit/5
         [HttpPost]
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int id, Position collection)
         {
             try
@@ -99,7 +99,7 @@ namespace Catalogue.Controllers.CRUD
         }
 
         // GET: Position/Delete/5
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -112,7 +112,7 @@ namespace Catalogue.Controllers.CRUD
 
         // POST: Position/Delete/5
         [HttpPost]
-        [Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin")]
         [ActionName("Delete")]
         public ActionResult Delete(int? id, Position collection)
         {
@@ -120,7 +120,7 @@ namespace Catalogue.Controllers.CRUD
             try
             {
                 if (id == null)
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                     return HttpNotFound();
                 position = db.Positions.Find(id);
                 if (position == null)
                     return HttpNotFound();

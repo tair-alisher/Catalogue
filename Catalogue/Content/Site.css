@@ -2,17 +2,17 @@
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
-/*.no-js #loader { display: none;  }
+.no-js #loader { display: none;  }
 .js #loader { display: block; position: absolute; left: 100px; top: 0; }
-.se-pre-con {
+#se-pre-con {
 	position: fixed;
 	left: 0px;
 	top: 0px;
 	width: 100%;
 	height: 100%;
-	z-index: 1000;
-	background: url(assets/img/Preloader_2.gif) center no-repeat #fff;
-}*/
+	z-index: 9999;
+	background: url(assets/img/Preloader_2.gif) center no-repeat rgba(251, 251, 251, 0.00);
+}
 
 .dl-horizontal dt {
     white-space: normal;
@@ -21,11 +21,7 @@
    word-wrap:break-word;
     overflow-wrap:break-word;
 }
-.btn-group {
-    display: inline-block;
-    vertical-align: middle;
-    padding-left: 17%;
-}
+
 .custom-checkbox{
     position: relative !important;
     margin: -6px -10px 10px !important;
@@ -85,6 +81,20 @@ div.loading {
     margin: 0 auto;
     overflow: inherit;
 }
+.btn-group-employee {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 17%;
+    margin-left: 0%;
+}
+
+.btn-group, .btn-group-vertical {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 23%;
+}
+
 .modal-backdrop.in {
     opacity: 0;
 }
@@ -111,3 +121,4 @@ div.loading {
 .modal-open {
     padding-right: 0px !important;
 }
+

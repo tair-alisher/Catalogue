@@ -13,7 +13,7 @@ namespace Catalogue.Models.Tables
         public int EmployeeId { get; set; }
 
         [Display(Name = "ФИО")]
-        [RegularExpression(@"^[a-zA-ZА-Яа-я ]+$", ErrorMessage = "Ввод цифр запрещен")]
+        [RegularExpression(@"^[a-zA-ZЁёӨөҮүҢңА-Яа-я ]+$", ErrorMessage = "Ввод цифр запрещен")]
         [StringLength(100, ErrorMessage = "Длина строки не должна превышать 100 символов")]
         [Required(ErrorMessage = "Заполните поле!")]
         public string EmployeeFullName { get; set; }
@@ -46,7 +46,7 @@ namespace Catalogue.Models.Tables
         public string EmployeeSkype { get; set; }
 
         [Display(Name = "Фото сотрудника")]
-        [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.jpeg)$", ErrorMessage = "Формат файла должен быть .jpg, .png, .jpeg")]       
+        [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.JPG|.JPEG|.PNG|.jpeg)$", ErrorMessage = "Формат файла должен быть .jpg, .png, .jpeg")]       
         public string EmployeePhoto { get; set; }
 
         /// <summary>
