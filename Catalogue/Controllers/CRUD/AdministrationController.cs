@@ -1,66 +1,85 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Catalogue.Models.Tables;
-using System.Net;
-using System.Data.Entity;
+﻿using System.Web.Mvc;
 using PagedList;
+
+using Catalogue.Util;
+using Catalogue.Core;
+using Catalogue.Interfaces;
+using Catalogue.Infrastructure;
 
 namespace Catalogue.Controllers.CRUD
 {
     public class AdministrationController : Controller
     {
-        CatalogueContext db = new CatalogueContext();
+        IUnitOfWork unit;
+        
+        public AdministrationController()
+        {
+            this.unit = new UnitOfWork();
+        }
+        public AdministrationController(IUnitOfWork unit)
+        {
+            this.unit = unit;
+        }
 
-        // Ajax pagination PartialView Administration 
         [Authorize(Roles = "admin")]
         public ActionResult AjaxPositionList(int? page)
         {
-            int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return PartialView(db.Administrations.Include(e => e.Division).OrderBy(i => i.AdministrationName).ToPagedList(pageNumber, pageSize));
+            IPagedList<Administration> administrations = unit
+                .Administrations
+                .GetAdministrationsWithDivisionsOrderedByName()
+                .ToPagedList(pageNumber, Constants.PageSize);
+
+            return PartialView(administrations);
         }
 
-        // GET: Administration
         [Authorize(Roles = "admin")]
         public ActionResult Index(int? page)
         {
-            int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(db.Administrations.Include(e => e.Division).OrderBy(i => i.AdministrationName).ToPagedList(pageNumber, pageSize));
+            IPagedList<Administration> administrations = unit
+                .Administrations
+                .GetAdministrationsWithDivisionsOrderedByName()
+                .ToPagedList(pageNumber, Constants.PageSize);
+
+            return View(administrations);
         }
 
-        // GET: Administration/Details/5
         [Authorize(Roles = "admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
                 return HttpNotFound();
-            Administration administration = db.Administrations.Include(e => e.Division).SingleOrDefault(d => d.AdministrationId == id);
+
+            Administration administration = unit
+                .Administrations
+                .GetSingleAdministrationWithDivisionById((int)id);
+
             return View(administration);
         }
 
-        // GET: Administration/Create
         [HttpGet]
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
-            SelectList divisionList = new SelectList(db.Divisions, "DivisionId", "DivisionName");
+            SelectList divisionList = new SelectList(
+                unit.Divisions.GetAll(),
+                "DivisionId",
+                "DivisionName"
+                );
+
             ViewBag.AdministrationList = divisionList;
             return View();
         }
 
-        // POST: Administration/Create
         [HttpPost]
         [Authorize(Roles = "admin")]
         public ActionResult Create(Administration collection)
         {
             try
             {
-                db.Administrations.Add(collection);
-                db.SaveChanges();
+                unit.Administrations.Create(collection);
+                unit.Save();
                 return RedirectToAction("Index");
             }
             catch
@@ -69,30 +88,37 @@ namespace Catalogue.Controllers.CRUD
             }
         }
 
-        // GET: Administration/Edit/5
         [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
                 return HttpNotFound();
-            Administration administration = db.Administrations.Find(id);
+
+            Administration administration = unit
+                .Administrations
+                .Get((int)id);
+
             if (administration == null)
                 return HttpNotFound();
 
-            SelectList divisionList = new SelectList(db.Divisions, "DivisionId", "DivisionName");
+            SelectList divisionList = new SelectList(
+                unit.Divisions.GetAll(),
+                "DivisionId",
+                "DivisionName"
+                );
+
             ViewBag.AdministrationList = divisionList;
             return View(administration);
         }
 
-        // POST: Administration/Edit/5
         [HttpPost]
         [Authorize(Roles = "admin")]
         public ActionResult Edit(int id, Administration collection)
         {
             try
             {
-                db.Entry(collection).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                unit.Administrations.Update(collection);
+                unit.Save();
                 return RedirectToAction("Index");
             }
             catch
@@ -101,32 +127,31 @@ namespace Catalogue.Controllers.CRUD
             }
         }
 
-        // GET: Administration/Delete/5
         [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
-        {         
-            Administration administration = db.Administrations.Find(id);
+        {
+            Administration administration = unit
+                .Administrations
+                .Get((int)id);
+
             if (administration != null)
                 return PartialView("Delete", administration);
+
             return View("Index");
         }
 
-        // POST: Administration/Delete/5
         [HttpPost]
         [Authorize(Roles = "admin")]
         [ActionName("Delete")]
         public ActionResult Delete(int? id, Administration collection)
         {
-            Administration administration = new Administration();
             try
             {
                 if (id == null)
                     return HttpNotFound();
-                administration = db.Administrations.Find(id);
-                if (administration == null)
-                    return HttpNotFound();
-                db.Administrations.Remove(administration);
-                db.SaveChanges();
+
+                unit.Administrations.Delete((int)id);
+                unit.Save();
 
                 return RedirectToAction("Index");
             }
