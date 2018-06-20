@@ -58,6 +58,18 @@ namespace Catalogue.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        public ActionResult AdministrationSearch(string title)
+        {
+            if (title.Trim().Length <= 0)
+                return RedirectToAction("NotFoundResult");
+
+            string[] nameParts = title.Split(' ');
+            ViewBag.Items = SearchEngine.AdministrationSearch(nameParts);
+
+            return View("Administrations.chtml");
+        }
+
+        [Authorize(Roles = "admin")]
         public ActionResult DepartmentSearch(string title)
         {
             if (title.Trim().Length <= 0)
@@ -70,50 +82,27 @@ namespace Catalogue.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        public ActionResult AdministrationSearch(string title)
+        public ActionResult DivsionSearch(string title)
         {
             if (title.Trim().Length <= 0)
                 return RedirectToAction("NotFoundResult");
 
             string[] nameParts = title.Split(' ');
-            ViewBag.Items = SearchEngine.AdministrationSearch(nameParts);
+            ViewBag.Items = SearchEngine.DivisionSearch(nameParts);
 
-            return View("Administrations.chtml");
+            return View("Divisions.cshtml");
         }
 
-        // Forms a partial view with a list of found entities
         [Authorize(Roles = "admin")]
-        public ActionResult AdminSearch(string title, string type)
+        public ActionResult PositionSearch(string title)
         {
-            string view = "~/Views/Search/";
-            string[] words = title.ToLower().Split(' ');
-
-            // returns not found if input string is empty
             if (title.Trim().Length <= 0)
                 return RedirectToAction("NotFoundResult");
 
-            if (type == "department")
-            {
-                List<Department> departments = BuildDepartmentSearchQuery(words).ToList();
-                BindSearchResults(departments, ref view, "Departments.cshtml");
-            }
-            else if (type == "administration")
-            {
-                List<Administration> administrations = BuildAdministartionSearchQuery(words).ToList();
-                BindSearchResults(administrations, ref view, "Administrations.cshtml");
-            }
-            else if (type == "position")
-            {
-                List<Position> positions = BuildPositionSearchQuery(words).ToList();
-                BindSearchResults(positions, ref view, "Positions.cshtml");
-            }
-            else if (type == "division")
-            {
-                List<Division> divisions = BuildDivisionSearchQuery(words).ToList();
-                BindSearchResults(divisions, ref view, "Divisions.cshtml");
-            }
+            string[] nameParts = title.Split(' ');
+            ViewBag.Items = SearchEngine.PositionSearch(nameParts);
 
-            return PartialView(view);
+            return View("Positions.cshtml");
         }
 
         [Authorize(Roles = "manager")]
@@ -122,61 +111,10 @@ namespace Catalogue.Controllers
             if (id == null)
                 return HttpNotFound();
 
-
-            Employee employee = db.Employees.Include(p => p.Position).Include(d => d.Department).Include(e => e.Department.Administration).SingleOrDefault(e => e.EmployeeId == id);
+            Employee employee = unit.Employees
+                .GetEmployeeWithRelationsById((int)id);
 
             return View(employee);
-        }
-
-
-        // Binds entity search results and entity view
-        private void BindSearchResults<T> (List<T> items, ref string view, string entityView)
-        {
-            if (items.Count <= 0)
-            {
-                view += "NotFound.cshtml";
-            }
-            else
-            {
-                ViewBag.Items = items;
-                view += entityView;
-            }
-        }
-
-        // Builds a search query that matches all words of the array 'words'
-        private IEnumerable<Department> BuildDepartmentSearchQuery (params string[] words)
-        {
-            IEnumerable<Department> query = db.Departments
-                .Include(a => a.Administration)
-                .ToList()
-                .Where(d => words.All(d.DepartmentName.ToLower().Contains));
-
-            return query;
-        }
-        private IEnumerable<Administration> BuildAdministartionSearchQuery (params string[] words)
-        {
-            IEnumerable<Administration> query = db.Administrations
-                .Include(a => a.Division)
-                .ToList()
-                .Where(d => words.All(d.AdministrationName.ToLower().Contains));
-
-            return query;
-        }
-        private IEnumerable<Position> BuildPositionSearchQuery (params string[] words)
-        {
-            IEnumerable<Position> query = db.Positions
-                .ToList()
-                .Where(d => words.All(d.PositionName.ToLower().Contains));
-
-            return query;
-        }
-        private IEnumerable<Division> BuildDivisionSearchQuery (params string[] words)
-        {
-            IEnumerable<Division> query = db.Divisions
-                .ToList()
-                .Where(d => words.All(d.DivisionName.ToLower().Contains));
-
-            return query;
         }
     }
 }

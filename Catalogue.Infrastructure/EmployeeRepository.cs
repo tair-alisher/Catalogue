@@ -131,5 +131,14 @@ namespace Catalogue.Infrastructure
                     e.EmployeeFullName.Contains(secondParam) &&
                     e.EmployeeFullName.Contains(thirdParam));
         }
+
+        public Employee GetEmployeeWithRelationsById(int id)
+        {
+            return db.Employees
+                .Include(p => p.Position)
+                .Include(d => d.Department)
+                .Include(e => e.Department.Administration)
+                .SingleOrDefault(e => e.EmployeeId == id);
+        }
     }
 }

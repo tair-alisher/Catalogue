@@ -63,7 +63,7 @@ namespace Catalogue.Infrastructure
                 .Select(i => i.DepartmentId);
         }
 
-        public IEnumerable<int> GetDeparmentIdsByAdministrationIds(List<int> ids)
+        public IEnumerable<int> GetDepartmentIdsByAdministrationIds(List<int> ids)
         {
             return db.Departments
                 .Where(d => ids.Contains(d.AdministrationId))

@@ -14,5 +14,6 @@ namespace Catalogue.Interfaces
         void Update(Division division);
         void Delete(int id);
         IEnumerable<Division> GetDivisionsOrderedByName();
+        IEnumerable<Division> GetDivisionsByNameParts(string[] nameParts);
     }
 }

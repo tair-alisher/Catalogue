@@ -46,5 +46,13 @@ namespace Catalogue.Infrastructure
             return db.Positions
                 .OrderBy(p => p.PositionName);
         }
+
+        public IEnumerable<Position> GetPositionsByNameParts(string[] nameParts)
+        {
+            return db.Positions
+                .Where(p =>
+                    nameParts.All(p.PositionName.ToLower().Contains)
+                );
+        }
     }
 }

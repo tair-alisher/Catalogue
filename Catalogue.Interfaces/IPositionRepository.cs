@@ -14,5 +14,6 @@ namespace Catalogue.Interfaces
         void Delete(int id);
 
         IEnumerable<Position> GetPositionsOrderedByName();
+        IEnumerable<Position> GetPositionsByNameParts(string[] nameParts);
     }
 }

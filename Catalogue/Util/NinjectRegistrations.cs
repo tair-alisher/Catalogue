@@ -1,5 +1,5 @@
 ﻿using Ninject.Modules;
-using Catalogue.Core;
+using Catalogue.Services;
 using Catalogue.Interfaces;
 using Catalogue.Infrastructure;
 
@@ -16,6 +16,7 @@ namespace Catalogue.Util
             Bind<IDivisionRepository>().To<DivisionRepository>();
             Bind<IEmployeeRepository>().To<EmployeeRepository>();
             Bind<IPositionRepository>().To<PositionRepository>();
+            Bind<ISearchEngine>().To<SearchEngine>();
         }
     }
 }

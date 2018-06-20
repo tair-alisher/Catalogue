@@ -45,5 +45,14 @@ namespace Catalogue.Infrastructure
         {
             return db.Divisions.OrderBy(d => d.DivisionName);
         }
+
+        public IEnumerable<Division> GetDivisionsByNameParts(string[] nameParts)
+        {
+            return db.Divisions
+                .Where(d =>
+                    nameParts
+                        .All(d.DivisionName.ToLower().Contains)
+                );
+        }
     }
 }

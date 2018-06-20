@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data.Entity;
 using Catalogue.Core;
 using Catalogue.Interfaces;
-using Catalogue.Infrastructure;
 
 namespace Catalogue.Services
 {
@@ -41,22 +39,19 @@ namespace Catalogue.Services
         {
             return BuildAdministrationSearchQuery(nameParts);
         }
-        private IEnumerable<Administration> BuildAdministrationSearchQuery(string[] nameParts)
-        {
-            return unit.Administrations
-                .GetAdministrationsByNameParts(nameParts);
-        }
-
         public IEnumerable<Department> DepartmentSearch(string[] nameParts)
         {
             return BuildDepartmentSearchQuery(nameParts);
         }
-        private IEnumerable<Department> BuildDepartmentSearchQuery(string[] nameParts)
+        public IEnumerable<Division> DivisionSearch(string[] nameParts)
         {
-            return unit.Departments
-                .GetDepartmentsByNameParts(nameParts);
+            return BuildDivisionSearchQuery(nameParts);
         }
-
+        public IEnumerable<Position> PositionSearch(string[] nameParts)
+        {
+            return BuildPositionSearchQuery(nameParts);
+        }
+        
         private IQueryable<Employee> SplitNameAndBuildQuery(string name)
         {
             IQueryable<Employee> employees = Enumerable.Empty<Employee>().AsQueryable();
@@ -118,6 +113,27 @@ namespace Catalogue.Services
                 .Include(d => d.Department)
                 .Include(e => e.Department.Administration)
                 .Include(p => p.Position);
+        }
+
+        private IEnumerable<Administration> BuildAdministrationSearchQuery(string[] nameParts)
+        {
+            return unit.Administrations
+                .GetAdministrationsByNameParts(nameParts);
+        }
+        private IEnumerable<Department> BuildDepartmentSearchQuery(string[] nameParts)
+        {
+            return unit.Departments
+                .GetDepartmentsByNameParts(nameParts);
+        }
+        private IEnumerable<Division> BuildDivisionSearchQuery(string[] nameParts)
+        {
+            return unit.Divisions
+                .GetDivisionsByNameParts(nameParts);
+        }
+        private IEnumerable<Position> BuildPositionSearchQuery(string[] nameParts)
+        {
+            return unit.Positions
+                .GetPositionsByNameParts(nameParts);
         }
 
         private List<int> GetDepartmentIds(string type, int? id)

@@ -25,6 +25,7 @@ namespace Catalogue.Interfaces
             string oldImagePath
             );
 
+        Employee GetEmployeeWithRelationsById(int id);
         IQueryable<Employee> GetEmployeesOrderedByName();
         IQueryable<Employee> GetEmployeesByOneNameParam(string firstParam);
         IQueryable<Employee> GetEmployeesByTwoNameParams(string firstParam, string secondParam);
