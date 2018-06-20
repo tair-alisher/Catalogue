@@ -55,5 +55,30 @@ namespace Catalogue.Infrastructure
                 .Include(e => e.Administration)
                 .SingleOrDefault(d => d.DepartmentId == id);
         }
+
+        public IEnumerable<int> GetDepartmentIdsByAdministrationID(int id)
+        {
+            return db.Departments
+                .Where(d => d.AdministrationId == id)
+                .Select(i => i.DepartmentId);
+        }
+
+        public IEnumerable<int> GetDeparmentIdsByAdministrationIds(List<int> ids)
+        {
+            return db.Departments
+                .Where(d => ids.Contains(d.AdministrationId))
+                .Select(i => i.DepartmentId);
+        }
+
+        public IEnumerable<Department> GetDepartmentsByNameParts (string[] nameParts)
+        {
+            return db.Departments
+                .Include(a => a.Administration)
+                .Where(d =>
+                    nameParts
+                    .All(d.DepartmentName.ToLower()
+                    .Contains)
+                );
+        }
     }
 }

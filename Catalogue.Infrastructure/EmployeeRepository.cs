@@ -105,6 +105,31 @@ namespace Catalogue.Infrastructure
                 .SingleOrDefault(e => e.EmployeeId == id);
         }
 
-        
+        public IQueryable<Employee> GetEmployeesOrderedByName()
+        {
+            return db.Employees
+                .OrderBy(e => e.EmployeeFullName);
+        }
+
+        public IQueryable<Employee> GetEmployeesByOneNameParam(string nameParam)
+        {
+            return db.Employees
+                .Where(e => e.EmployeeFullName.Contains(nameParam));
+        }
+        public IQueryable<Employee> GetEmployeesByTwoNameParams(string firstParam, string secondParam)
+        {
+            return db.Employees
+                .Where(e =>
+                    e.EmployeeFullName.Contains(firstParam) &&
+                    e.EmployeeFullName.Contains(secondParam));
+        }
+        public IQueryable<Employee> GetEmployeesByThreeParams(string firstParam, string secondParam, string thirdParam)
+        {
+            return db.Employees
+                .Where(e =>
+                    e.EmployeeFullName.Contains(firstParam) &&
+                    e.EmployeeFullName.Contains(secondParam) &&
+                    e.EmployeeFullName.Contains(thirdParam));
+        }
     }
 }

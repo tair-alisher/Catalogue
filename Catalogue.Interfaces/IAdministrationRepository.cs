@@ -12,5 +12,7 @@ namespace Catalogue.Interfaces
         void Delete(int id);
         IEnumerable<Administration> GetAdministrationsWithDivisionsOrderedByName();
         Administration GetSingleAdministrationWithDivisionById(int id);
+        IEnumerable<int> GetAdministrationIdsByDivisionId(int id);
+        IEnumerable<Administration> GetAdministrationsByNameParts(string[] nameParts);
     }
 }

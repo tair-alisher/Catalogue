@@ -15,5 +15,8 @@ namespace Catalogue.Interfaces
         void Delete(int id);
         IEnumerable<Department> GetDepartmentsWithAdministrationsOrderedByName();
         Department GetSingleDepartmentWithAdministrationById(int id);
+        IEnumerable<int> GetDepartmentIdsByAdministrationID(int id);
+        IEnumerable<int> GetDepartmentIdsByAdministrationIds(List<int> ids);
+        IEnumerable<Department> GetDepartmentsByNameParts(string[] nameParts);
     }
 }

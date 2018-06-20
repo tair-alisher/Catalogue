@@ -605,6 +605,10 @@
       <Project>{e79abfd8-5baa-414b-94b5-aca7928aa4f1}</Project>
       <Name>Catalogue.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Catalogue.Services\Catalogue.Services.csproj">
+      <Project>{8c33c555-3966-44a9-840a-d1d1aaf33808}</Project>
+      <Name>Catalogue.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

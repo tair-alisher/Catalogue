@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using System.Linq;
 using System.Collections.Generic;
 using Catalogue.Core;
 
@@ -23,5 +24,10 @@ namespace Catalogue.Interfaces
             string imageDirectory,
             string oldImagePath
             );
+
+        IQueryable<Employee> GetEmployeesOrderedByName();
+        IQueryable<Employee> GetEmployeesByOneNameParam(string firstParam);
+        IQueryable<Employee> GetEmployeesByTwoNameParams(string firstParam, string secondParam);
+        IQueryable<Employee> GetEmployeesByThreeParams(string firstParam, string secondParam, string thirdParam);
     }
 }
